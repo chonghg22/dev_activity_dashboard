@@ -1,4 +1,8 @@
-import { fetchStatsSummary, fetchTimeline, fetchPublicProjects } from "@/lib/api";
+import {
+  fetchRecentTimeline,
+  fetchPublicProjects,
+  fetchStatsSummary,
+} from "@/lib/api";
 import SummaryCard from "@/components/dashboard/SummaryCard";
 import ActivityChart from "@/components/dashboard/ActivityChart";
 import RecentTimeline from "@/components/dashboard/RecentTimeline";
@@ -7,7 +11,7 @@ import ProjectCard from "@/components/project/ProjectCard";
 export default async function HomePage() {
   const [stats, timeline, projects] = await Promise.all([
     fetchStatsSummary(),
-    fetchTimeline({ page: 0, size: 10 }),
+    fetchRecentTimeline(),
     fetchPublicProjects(0, 6),
   ]);
 

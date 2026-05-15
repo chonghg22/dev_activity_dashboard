@@ -12,10 +12,8 @@ interface Props {
 export default async function ProjectDetailPage({ params }: Props) {
   const { slug } = await params;
 
-  let project;
-  try {
-    project = await fetchProjectDetail(slug);
-  } catch {
+  const project = await fetchProjectDetail(slug);
+  if (!project) {
     notFound();
   }
 
