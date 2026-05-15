@@ -33,8 +33,8 @@ export default function RecentTimeline({ items }: RecentTimelineProps) {
           View all &rarr;
         </Link>
       </div>
-      <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2">
-        {items.slice(0, 4).map((item) => (
+      <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 xl:grid-cols-3">
+        {items.map((item) => (
           <article
             key={`${item.sourceKind}-${item.id}`}
             className="flex h-full flex-col justify-between rounded-lg border border-gray-100 bg-gray-50 p-4 transition-colors hover:border-gray-200 hover:bg-white"

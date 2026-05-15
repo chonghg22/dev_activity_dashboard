@@ -68,9 +68,9 @@ export async function fetchTimeline(params: TimelineParams = {}) {
   }
 }
 
-export async function fetchRecentTimeline() {
+export async function fetchRecentTimeline(size = 4) {
   try {
-    return await fetchCachedRecentTimeline();
+    return await fetchCachedRecentTimeline(size);
   } catch {
     return EMPTY_PAGE as PageResponse<PublicTimelineItem>;
   }
@@ -101,7 +101,7 @@ const fetchCachedProjectDetail = unstable_cache(
 );
 
 const fetchCachedRecentTimeline = unstable_cache(
-  async () => loadTimeline({ page: 0, size: 10 }),
+  async (size: number) => loadTimeline({ page: 0, size }),
   ["public-recent-timeline"],
   { revalidate: 60 },
 );

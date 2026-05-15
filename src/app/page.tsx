@@ -11,7 +11,7 @@ import ProjectCard from "@/components/project/ProjectCard";
 export default async function HomePage() {
   const [stats, timeline, projects] = await Promise.all([
     fetchStatsSummary(),
-    fetchRecentTimeline(),
+    fetchRecentTimeline(6),
     fetchPublicProjects(0, 6),
   ]);
 
