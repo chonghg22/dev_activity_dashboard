@@ -37,14 +37,22 @@ export function activityTypeColor(type: string): string {
   return map[type] ?? "bg-gray-100 text-gray-800";
 }
 
-/** ISO datetime → 'YYYY-MM-DD' */
-export function formatDate(iso: string): string {
-  return iso.slice(0, 10);
+/** date/datetime 값 → 'YYYY-MM-DD' */
+export function formatDate(value: string | Date | null | undefined): string {
+  if (!value) {
+    return "";
+  }
+
+  if (value instanceof Date) {
+    return value.toISOString().slice(0, 10);
+  }
+
+  return value.slice(0, 10);
 }
 
 /** ISO datetime → 'YYYY-MM-DD HH:mm' */
-export function formatDateTime(iso: string): string {
-  const d = new Date(iso);
+export function formatDateTime(value: string | Date): string {
+  const d = value instanceof Date ? value : new Date(value);
   const pad = (n: number) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
