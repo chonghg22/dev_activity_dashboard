@@ -73,19 +73,19 @@ export default async function HomePage() {
           label="Public Projects"
           value={stats.publicProjectCount}
           icon="&#128194;"
-          helper="Active and visible in the portfolio"
+          helper="Projects that are both active and publicly visible"
         />
         <SummaryCard
-          label="Total Activities"
+          label="Public Activity Records"
           value={stats.totalPublicActivityCount}
           icon="&#128221;"
-          helper={`Manual ${stats.publicManualLogCount} + External ${stats.publicExternalActivityCount}`}
+          helper={`All-time public count: manual logs ${stats.publicManualLogCount} + synced external activities ${stats.publicExternalActivityCount}`}
         />
         <SummaryCard
-          label="Highlights"
+          label="Featured Manual Logs"
           value={stats.highlightedLogCount}
           icon="&#11088;"
-          helper="Highlighted public manual logs"
+          helper="Only public manual logs marked as highlighted"
         />
       </section>
 
