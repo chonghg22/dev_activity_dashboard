@@ -1,19 +1,19 @@
 /** 활동 유형을 사람이 읽기 좋은 라벨로 변환 */
 export function activityTypeLabel(type: string): string {
   const map: Record<string, string> = {
-    CODING: "Coding",
-    TESTING: "Testing",
-    DOCUMENTATION: "Documentation",
-    MEETING: "Meeting",
-    CODE_REVIEW: "Code Review",
-    DEBUGGING: "Debugging",
-    OTHER: "Other",
-    COMMIT: "Commit",
-    ISSUE_OPENED: "Issue Opened",
-    ISSUE_CLOSED: "Issue Closed",
-    PR_OPENED: "PR Opened",
-    PR_MERGED: "PR Merged",
-    PR_CLOSED: "PR Closed",
+    CODING: "개발",
+    TESTING: "테스트",
+    DOCUMENTATION: "문서화",
+    MEETING: "회의",
+    CODE_REVIEW: "코드 리뷰",
+    DEBUGGING: "디버깅",
+    OTHER: "기타",
+    COMMIT: "커밋",
+    ISSUE_OPENED: "이슈 등록",
+    ISSUE_CLOSED: "이슈 종료",
+    PR_OPENED: "PR 생성",
+    PR_MERGED: "PR 머지",
+    PR_CLOSED: "PR 종료",
   };
   return map[type] ?? type;
 }
@@ -59,5 +59,5 @@ export function formatDateTime(value: string | Date): string {
 
 /** sourceKind 라벨 */
 export function sourceKindLabel(kind: string): string {
-  return kind === "MANUAL_LOG" ? "Manual" : "External";
+  return kind === "MANUAL_LOG" ? "수기 로그" : "외부 활동";
 }

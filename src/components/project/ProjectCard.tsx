@@ -15,7 +15,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400">
-            Public Project
+            공개 프로젝트
           </p>
           <h3 className="mt-2 text-lg font-semibold tracking-tight text-gray-950 group-hover:text-gray-700">
             {project.name}
@@ -31,7 +31,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </p>
       )}
       <div className="mt-5 flex items-center justify-between text-xs text-gray-400">
-        <span>View project detail</span>
+        <span>프로젝트 상세 보기</span>
         <span className="transition-transform group-hover:translate-x-0.5">
           &rarr;
         </span>

@@ -42,7 +42,7 @@ export default async function TimelinePage({ searchParams }: Props) {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Timeline</h1>
+      <h1 className="text-2xl font-bold text-gray-900">타임라인</h1>
 
       <TimelineFilter
         projects={projects.content}
@@ -55,7 +55,7 @@ export default async function TimelinePage({ searchParams }: Props) {
 
       {data.content.length === 0 ? (
         <p className="py-12 text-center text-sm text-gray-400">
-          No activities found.
+          조건에 맞는 활동 기록이 없습니다.
         </p>
       ) : (
         <>

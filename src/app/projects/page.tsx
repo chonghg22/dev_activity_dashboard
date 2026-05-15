@@ -15,10 +15,10 @@ export default async function ProjectsPage({ searchParams }: Props) {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Projects</h1>
+      <h1 className="text-2xl font-bold text-gray-900">프로젝트</h1>
 
       {data.content.length === 0 ? (
-        <p className="text-sm text-gray-400">No public projects yet.</p>
+        <p className="text-sm text-gray-400">아직 공개된 프로젝트가 없습니다.</p>
       ) : (
         <>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -36,14 +36,14 @@ export default async function ProjectDetailPage({ params }: Props) {
             {project.startedOn && formatDate(project.startedOn)}
             {project.startedOn && project.endedOn && " ~ "}
             {project.endedOn && formatDate(project.endedOn)}
-            {project.startedOn && !project.endedOn && " ~ Present"}
+            {project.startedOn && !project.endedOn && " ~ 진행 중"}
           </p>
         )}
       </div>
 
       <section>
         <h2 className="mb-4 text-lg font-semibold text-gray-800">
-          Activity Timeline
+          활동 타임라인
         </h2>
         <RecentTimeline items={timeline.content} />
       </section>

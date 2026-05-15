@@ -14,21 +14,21 @@ export default function ActivityChart({ metrics }: ActivityChartProps) {
       <div className="mb-5 flex items-end justify-between gap-3">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400">
-            Breakdown
+            분포
           </p>
           <h3 className="mt-2 text-lg font-semibold text-gray-950">
-            Activity Distribution
+            활동 유형 분포
           </h3>
         </div>
         <span className="rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-[11px] font-semibold text-gray-500">
-          {total} logs
+          총 {total}건
         </span>
       </div>
       <div className="space-y-3">
         {metrics.map((m) => {
           const pct = Math.round((m.count / total) * 100);
           return (
-          <div key={m.activityType}>
+            <div key={m.activityType}>
               <div className="mb-1 flex items-center justify-between text-sm">
                 <span
                   className={`rounded-full px-2 py-0.5 text-xs font-medium ${activityTypeColor(m.activityType)}`}

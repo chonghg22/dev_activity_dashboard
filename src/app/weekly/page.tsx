@@ -59,10 +59,10 @@ export default async function WeeklyPage({ searchParams }: Props) {
     return (
       <div className="py-20 text-center">
         <p className="text-lg font-medium text-gray-400">
-          Unable to load weekly data.
+          주간 데이터를 불러올 수 없습니다.
         </p>
         <p className="mt-1 text-sm text-gray-400">
-          Check database connectivity and try again.
+          데이터베이스 연결 상태를 확인한 뒤 다시 시도해 주세요.
         </p>
       </div>
     );
@@ -79,14 +79,14 @@ export default async function WeeklyPage({ searchParams }: Props) {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">
-              Weekly Review
+              주간 리뷰
             </p>
             <h1 className="mt-2 text-3xl font-bold text-gray-900">
               {weekRangeLabel(stats.weekStartDate, stats.weekEndDate)}
             </h1>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-600">
-              Public manual activity logs for the selected week. External
-              activities are not included in this view yet.
+              선택한 주의 공개 수기 활동 로그 기준 요약입니다. 외부 동기화
+              활동은 아직 이 화면에 포함되지 않습니다.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -94,19 +94,19 @@ export default async function WeeklyPage({ searchParams }: Props) {
               href={`/weekly?week=${previousWeek}`}
               className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-gray-300 hover:bg-gray-50"
             >
-              Previous Week
+              이전 주
             </Link>
             <Link
               href={`/weekly?week=${currentWeek}`}
               className="rounded-lg border border-gray-900 bg-gray-900 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800"
             >
-              Current Week
+              이번 주
             </Link>
             <Link
               href={`/weekly?week=${nextWeek}`}
               className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-gray-300 hover:bg-gray-50"
             >
-              Next Week
+              다음 주
             </Link>
           </div>
         </div>
@@ -114,17 +114,17 @@ export default async function WeeklyPage({ searchParams }: Props) {
 
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <SummaryCard
-          label="Total Activities"
+          label="총 활동 수"
           value={stats.totalActivities}
           icon="&#128221;"
         />
         <SummaryCard
-          label="Highlighted"
+          label="하이라이트"
           value={stats.highlightedActivities}
           icon="&#11088;"
         />
         <SummaryCard
-          label="Active Projects"
+          label="활동 프로젝트"
           value={stats.projectCounts.length}
           icon="&#128736;"
         />
@@ -134,16 +134,16 @@ export default async function WeeklyPage({ searchParams }: Props) {
         <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900">
-              Activity Types
+              활동 유형
             </h2>
             <span className="text-xs uppercase tracking-[0.16em] text-gray-400">
-              {stats.activityTypeCounts.length} groups
+              {stats.activityTypeCounts.length}개 그룹
             </span>
           </div>
 
           {stats.activityTypeCounts.length === 0 ? (
             <p className="py-16 text-center text-sm text-gray-400">
-              No public manual activities were recorded in this week.
+              이번 주에 기록된 공개 수기 활동이 없습니다.
             </p>
           ) : (
             <div className="mt-5 space-y-4">
@@ -177,16 +177,16 @@ export default async function WeeklyPage({ searchParams }: Props) {
         <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900">
-              Project Share
+              프로젝트 비중
             </h2>
             <span className="text-xs uppercase tracking-[0.16em] text-gray-400">
-              weekly split
+              주간 분포
             </span>
           </div>
 
           {stats.projectCounts.length === 0 ? (
             <p className="py-16 text-center text-sm text-gray-400">
-              No project activity in this week.
+              이번 주 프로젝트 활동이 없습니다.
             </p>
           ) : (
             <div className="mt-5 space-y-3">

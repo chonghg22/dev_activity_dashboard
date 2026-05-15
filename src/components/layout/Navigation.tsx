@@ -4,10 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Dashboard" },
-  { href: "/projects", label: "Projects" },
-  { href: "/timeline", label: "Timeline" },
-  { href: "/weekly", label: "Weekly" },
+  { href: "/", label: "대시보드" },
+  { href: "/projects", label: "프로젝트" },
+  { href: "/timeline", label: "타임라인" },
+  { href: "/weekly", label: "주간 리뷰" },
 ];
 
 export default function Navigation() {

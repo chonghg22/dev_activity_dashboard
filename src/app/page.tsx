@@ -19,10 +19,10 @@ export default async function HomePage() {
     return (
       <div className="py-20 text-center">
         <p className="text-lg font-medium text-gray-400">
-          Unable to connect to the API server.
+          API 서버에 연결할 수 없습니다.
         </p>
         <p className="mt-1 text-sm text-gray-400">
-          Make sure the backend is running.
+          백엔드가 실행 중인지 확인해 주세요.
         </p>
       </div>
     );
@@ -35,34 +35,36 @@ export default async function HomePage() {
         <div className="relative grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-amber-700">
-              Public Portfolio Snapshot
+              공개 포트폴리오 스냅샷
             </p>
             <h1 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight text-gray-950 sm:text-4xl">
-              A curated timeline of projects, manual logs, and synced delivery
-              signals.
+              프로젝트, 수기 로그, 동기화된 개발 활동을 한눈에 보는
+              공개 타임라인
             </h1>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-gray-600 sm:text-base">
-              Dev Activity Hub surfaces visible project work with a backend-first
-              lens: what was built, where effort accumulated, and which records
-              are worth highlighting.
+              Dev Activity Hub는 공개 가능한 프로젝트 작업 기록을
+              백엔드 중심 관점으로 정리합니다. 무엇을 만들었는지, 어디에
+              시간이 쌓였는지, 어떤 기록을 강조할지 빠르게 확인할 수 있습니다.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-2xl border border-white/80 bg-white/80 p-4 shadow-sm">
               <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-                Sources
+                수집 소스
               </p>
               <p className="mt-2 text-xl font-semibold text-gray-950">2</p>
-              <p className="mt-1 text-xs text-gray-500">Manual logs + GitHub sync</p>
+              <p className="mt-1 text-xs text-gray-500">
+                수기 로그 + GitHub 동기화
+              </p>
             </div>
             <div className="rounded-2xl border border-white/80 bg-white/80 p-4 shadow-sm">
               <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-                Coverage
+                공개 범위
               </p>
               <p className="mt-2 text-xl font-semibold text-gray-950">
                 {stats.publicProjectCount}
               </p>
-              <p className="mt-1 text-xs text-gray-500">Public active projects</p>
+              <p className="mt-1 text-xs text-gray-500">공개 중인 활성 프로젝트</p>
             </div>
           </div>
         </div>
@@ -70,22 +72,22 @@ export default async function HomePage() {
 
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <SummaryCard
-          label="Public Projects"
+          label="공개 프로젝트"
           value={stats.publicProjectCount}
           icon="&#128194;"
-          helper="Projects that are both active and publicly visible"
+          helper="활성 상태이면서 공개로 설정된 프로젝트 수"
         />
         <SummaryCard
-          label="Public Activity Records"
+          label="공개 활동 기록"
           value={stats.totalPublicActivityCount}
           icon="&#128221;"
-          helper={`All-time public count: manual logs ${stats.publicManualLogCount} + synced external activities ${stats.publicExternalActivityCount}`}
+          helper={`누적 공개 건수: 수기 로그 ${stats.publicManualLogCount} + 외부 활동 ${stats.publicExternalActivityCount}`}
         />
         <SummaryCard
-          label="Featured Manual Logs"
+          label="하이라이트 로그"
           value={stats.highlightedLogCount}
           icon="&#11088;"
-          helper="Only public manual logs marked as highlighted"
+          helper="공개 수기 로그 중 하이라이트로 지정된 기록 수"
         />
       </section>
 
@@ -94,15 +96,15 @@ export default async function HomePage() {
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400">
-                Portfolio
+                포트폴리오
               </p>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight text-gray-950">
-                Active Public Projects
+                공개 프로젝트
               </h2>
             </div>
             <p className="hidden max-w-md text-right text-sm leading-6 text-gray-500 md:block">
-              Each card points to project-specific activity history and category
-              context.
+              각 카드에서 프로젝트별 활동 이력과 카테고리 맥락을 확인할 수
+              있습니다.
             </p>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -117,8 +119,8 @@ export default async function HomePage() {
         <div className="lg:col-span-1">
           <ActivityChart metrics={stats.activityTypeCounts} />
           <p className="mt-2 px-1 text-xs text-gray-400">
-            Distribution is based on public manual logs. External synced
-            activities are included in the total activity KPI above.
+            분포 차트는 공개 수기 로그 기준입니다. 외부 동기화 활동은 위의
+            공개 활동 기록 카드에만 합산됩니다.
           </p>
         </div>
         <div className="lg:col-span-2">

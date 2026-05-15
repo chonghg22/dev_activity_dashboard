@@ -28,7 +28,7 @@ export default function Pagination({
           href={buildHref(currentPage - 1)}
           className="rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50"
         >
-          Prev
+          이전
         </Link>
       )}
       <span className="text-sm text-gray-500">
@@ -39,7 +39,7 @@ export default function Pagination({
           href={buildHref(currentPage + 1)}
           className="rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50"
         >
-          Next
+          다음
         </Link>
       )}
     </div>

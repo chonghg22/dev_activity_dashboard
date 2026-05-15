@@ -15,7 +15,7 @@ export default function RecentTimeline({ items }: RecentTimelineProps) {
   if (items.length === 0) {
     return (
       <div className="rounded-2xl border border-white/70 bg-white/90 p-6 text-center text-sm text-gray-400 shadow-[0_18px_40px_rgba(15,23,42,0.07)]">
-        No recent activities.
+        최근 활동이 없습니다.
       </div>
     );
   }
@@ -25,17 +25,17 @@ export default function RecentTimeline({ items }: RecentTimelineProps) {
       <div className="flex items-center justify-between border-b border-gray-100/80 px-6 py-5">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400">
-            Stream
+            스트림
           </p>
           <h3 className="mt-2 text-lg font-semibold text-gray-950">
-            Recent Activities
+            최근 활동
           </h3>
         </div>
         <Link
           href="/timeline"
           className="rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:bg-white hover:text-gray-900"
         >
-          View all &rarr;
+          전체 보기 &rarr;
         </Link>
       </div>
       <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 xl:grid-cols-3">
@@ -53,7 +53,7 @@ export default function RecentTimeline({ items }: RecentTimelineProps) {
                     </span>
                     {item.highlighted ? (
                       <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800">
-                        Highlight
+                        하이라이트
                       </span>
                     ) : null}
                   </div>
