@@ -1,0 +1,234 @@
+export const dynamic = "force-dynamic";
+
+import Link from "next/link";
+import SummaryCard from "@/components/dashboard/SummaryCard";
+import { fetchWeeklyStats } from "@/lib/api";
+import { activityTypeColor, activityTypeLabel, formatDate } from "@/lib/format";
+
+interface Props {
+  searchParams: Promise<{ week?: string }>;
+}
+
+function normalizeWeekStartDate(input?: string) {
+  const today = new Date();
+
+  if (!input) {
+    return toWeekStart(today);
+  }
+
+  const parsed = new Date(`${input}T00:00:00`);
+  if (Number.isNaN(parsed.getTime())) {
+    return toWeekStart(today);
+  }
+
+  return toWeekStart(parsed);
+}
+
+function toWeekStart(date: Date) {
+  const normalized = new Date(date);
+  normalized.setHours(0, 0, 0, 0);
+
+  const day = normalized.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  normalized.setDate(normalized.getDate() + diff);
+
+  return formatDate(normalized);
+}
+
+function shiftWeek(weekStartDate: string, offsetWeeks: number) {
+  const base = new Date(`${weekStartDate}T00:00:00`);
+  base.setDate(base.getDate() + offsetWeeks * 7);
+  return formatDate(base);
+}
+
+function percentage(count: number, total: number) {
+  if (total <= 0) return 0;
+  return Math.round((count / total) * 100);
+}
+
+function weekRangeLabel(start: string, end: string) {
+  return `${start} - ${end}`;
+}
+
+export default async function WeeklyPage({ searchParams }: Props) {
+  const params = await searchParams;
+  const week = normalizeWeekStartDate(params.week);
+  const stats = await fetchWeeklyStats(week);
+
+  if (!stats) {
+    return (
+      <div className="py-20 text-center">
+        <p className="text-lg font-medium text-gray-400">
+          Unable to load weekly data.
+        </p>
+        <p className="mt-1 text-sm text-gray-400">
+          Check database connectivity and try again.
+        </p>
+      </div>
+    );
+  }
+
+  const previousWeek = shiftWeek(stats.weekStartDate, -1);
+  const nextWeek = shiftWeek(stats.weekStartDate, 1);
+  const currentWeek = normalizeWeekStartDate();
+  const totalActivities = stats.totalActivities;
+
+  return (
+    <div className="space-y-6">
+      <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">
+              Weekly Review
+            </p>
+            <h1 className="mt-2 text-3xl font-bold text-gray-900">
+              {weekRangeLabel(stats.weekStartDate, stats.weekEndDate)}
+            </h1>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-600">
+              Public manual activity logs for the selected week. External
+              activities are not included in this view yet.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href={`/weekly?week=${previousWeek}`}
+              className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-gray-300 hover:bg-gray-50"
+            >
+              Previous Week
+            </Link>
+            <Link
+              href={`/weekly?week=${currentWeek}`}
+              className="rounded-lg border border-gray-900 bg-gray-900 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800"
+            >
+              Current Week
+            </Link>
+            <Link
+              href={`/weekly?week=${nextWeek}`}
+              className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-gray-300 hover:bg-gray-50"
+            >
+              Next Week
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <SummaryCard
+          label="Total Activities"
+          value={stats.totalActivities}
+          icon="&#128221;"
+        />
+        <SummaryCard
+          label="Highlighted"
+          value={stats.highlightedActivities}
+          icon="&#11088;"
+        />
+        <SummaryCard
+          label="Active Projects"
+          value={stats.projectCounts.length}
+          icon="&#128736;"
+        />
+      </section>
+
+      <section className="grid grid-cols-1 gap-5 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Activity Types
+            </h2>
+            <span className="text-xs uppercase tracking-[0.16em] text-gray-400">
+              {stats.activityTypeCounts.length} groups
+            </span>
+          </div>
+
+          {stats.activityTypeCounts.length === 0 ? (
+            <p className="py-16 text-center text-sm text-gray-400">
+              No public manual activities were recorded in this week.
+            </p>
+          ) : (
+            <div className="mt-5 space-y-4">
+              {stats.activityTypeCounts.map((metric) => {
+                const pct = percentage(metric.count, totalActivities);
+                return (
+                  <div key={metric.activityType}>
+                    <div className="mb-1 flex items-center justify-between text-sm">
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${activityTypeColor(metric.activityType)}`}
+                      >
+                        {activityTypeLabel(metric.activityType)}
+                      </span>
+                      <span className="text-gray-500">
+                        {metric.count} ({pct}%)
+                      </span>
+                    </div>
+                    <div className="h-2 overflow-hidden rounded-full bg-gray-100">
+                      <div
+                        className="h-full rounded-full bg-gray-900 transition-all"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Project Share
+            </h2>
+            <span className="text-xs uppercase tracking-[0.16em] text-gray-400">
+              weekly split
+            </span>
+          </div>
+
+          {stats.projectCounts.length === 0 ? (
+            <p className="py-16 text-center text-sm text-gray-400">
+              No project activity in this week.
+            </p>
+          ) : (
+            <div className="mt-5 space-y-3">
+              {stats.projectCounts.map((metric, index) => {
+                const pct = percentage(metric.count, totalActivities);
+                return (
+                  <div
+                    key={metric.projectSlug}
+                    className="rounded-xl border border-gray-100 bg-gray-50/70 p-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">
+                          #{String(index + 1).padStart(2, "0")}
+                        </p>
+                        <Link
+                          href={`/projects/${metric.projectSlug}`}
+                          className="mt-1 block text-base font-semibold text-gray-900 hover:text-gray-700"
+                        >
+                          {metric.projectName}
+                        </Link>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg font-bold text-gray-900">
+                          {metric.count}
+                        </p>
+                        <p className="text-sm text-gray-500">{pct}%</p>
+                      </div>
+                    </div>
+                    <div className="mt-3 h-2 overflow-hidden rounded-full bg-white">
+                      <div
+                        className="h-full rounded-full bg-gray-900 transition-all"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+}

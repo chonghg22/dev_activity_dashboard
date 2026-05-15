@@ -44,6 +44,8 @@ export interface ProjectMetric {
 export interface PublicStatsSummary {
   publicProjectCount: number;
   publicManualLogCount: number;
+  publicExternalActivityCount: number;
+  totalPublicActivityCount: number;
   highlightedLogCount: number;
   activityTypeCounts: ActivityTypeMetric[];
 }
@@ -78,6 +80,7 @@ export interface PublicTimelineItem {
 // ── Timeline 필터 파라미터 ──
 
 export interface TimelineParams {
+  keyword?: string;
   projectSlug?: string;
   activityType?: string;
   from?: string;

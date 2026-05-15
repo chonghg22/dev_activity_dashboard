@@ -110,6 +110,7 @@ async function loadStatsSummary(): Promise<PublicStatsSummary> {
   const [
     publicProjectCountResult,
     publicManualLogCountResult,
+    publicExternalActivityCountResult,
     highlightedLogCountResult,
     activityTypeCountsResult,
   ] = await Promise.all([
@@ -124,6 +125,14 @@ async function loadStatsSummary(): Promise<PublicStatsSummary> {
       FROM ${dbSchema}.manual_logs ml
       JOIN ${dbSchema}.projects p ON p.id = ml.project_id
       WHERE ml.visibility = 'PUBLIC'
+        AND p.is_public = true
+        AND p.status = 'ACTIVE'
+    `),
+    query<{ count: string }>(`
+      SELECT COUNT(*)::text AS count
+      FROM ${dbSchema}.external_activities ea
+      JOIN ${dbSchema}.projects p ON p.id = ea.project_id
+      WHERE ea.is_public = true
         AND p.is_public = true
         AND p.status = 'ACTIVE'
     `),
@@ -151,6 +160,12 @@ async function loadStatsSummary(): Promise<PublicStatsSummary> {
   return {
     publicProjectCount: Number(publicProjectCountResult.rows[0]?.count ?? 0),
     publicManualLogCount: Number(publicManualLogCountResult.rows[0]?.count ?? 0),
+    publicExternalActivityCount: Number(
+      publicExternalActivityCountResult.rows[0]?.count ?? 0,
+    ),
+    totalPublicActivityCount:
+      Number(publicManualLogCountResult.rows[0]?.count ?? 0) +
+      Number(publicExternalActivityCountResult.rows[0]?.count ?? 0),
     highlightedLogCount: Number(highlightedLogCountResult.rows[0]?.count ?? 0),
     activityTypeCounts: activityTypeCountsResult.rows.map((row) => ({
       activityType: row.activity_type,
@@ -459,6 +474,17 @@ function buildTimelineFilters(params: TimelineParams) {
   const manualClauses: string[] = [];
   const externalClauses: string[] = [];
   const values: unknown[] = [];
+
+  if (params.keyword?.trim()) {
+    values.push(`%${params.keyword.trim().toLowerCase()}%`);
+    const placeholder = `$${values.length}`;
+    manualClauses.push(
+      `(LOWER(ml.title) LIKE ${placeholder} OR LOWER(ml.content) LIKE ${placeholder})`,
+    );
+    externalClauses.push(
+      `(LOWER(ea.title) LIKE ${placeholder} OR LOWER(COALESCE(ea.content_summary, '')) LIKE ${placeholder})`,
+    );
+  }
 
   if (params.projectSlug) {
     values.push(params.projectSlug);

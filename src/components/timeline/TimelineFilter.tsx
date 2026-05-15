@@ -22,6 +22,7 @@ const ACTIVITY_TYPES = [
 
 interface TimelineFilterProps {
   projects: PublicProjectListItem[];
+  currentKeyword?: string;
   currentProjectSlug?: string;
   currentActivityType?: string;
   currentFrom?: string;
@@ -30,6 +31,7 @@ interface TimelineFilterProps {
 
 export default function TimelineFilter({
   projects,
+  currentKeyword,
   currentProjectSlug,
   currentActivityType,
   currentFrom,
@@ -42,10 +44,12 @@ export default function TimelineFilter({
       e.preventDefault();
       const fd = new FormData(e.currentTarget);
       const sp = new URLSearchParams();
+      const keyword = fd.get("keyword") as string;
       const slug = fd.get("projectSlug") as string;
       const type = fd.get("activityType") as string;
       const from = fd.get("from") as string;
       const to = fd.get("to") as string;
+      if (keyword.trim()) sp.set("keyword", keyword.trim());
       if (slug) sp.set("projectSlug", slug);
       if (type) sp.set("activityType", type);
       if (from) sp.set("from", from);
@@ -69,6 +73,17 @@ export default function TimelineFilter({
       onSubmit={handleSubmit}
       className="flex flex-wrap items-end gap-3 rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
     >
+      <div className="min-w-[220px] flex-1 flex-col gap-1">
+        <label className="text-xs text-gray-500">Keyword</label>
+        <input
+          type="text"
+          name="keyword"
+          defaultValue={currentKeyword ?? ""}
+          placeholder="Search title or content"
+          className={inputClass}
+        />
+      </div>
+
       <div className="flex flex-col gap-1">
         <label className="text-xs text-gray-500">Project</label>
         <select

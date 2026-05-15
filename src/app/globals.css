@@ -33,6 +33,9 @@ samp {
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(circle at top left, rgba(217, 119, 6, 0.08), transparent 30%),
+    radial-gradient(circle at top right, rgba(15, 23, 42, 0.06), transparent 28%),
+    linear-gradient(180deg, #fffdf8 0%, #f8fafc 45%, #f3f4f6 100%);
   color: var(--foreground);
 }

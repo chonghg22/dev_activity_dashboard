@@ -58,8 +58,10 @@ npm run start
 - `/projects`
 - `/projects/[slug]`
 - `/timeline`
+- `/weekly`
 
 ## Notes
 
 - DB 접속 정보가 없거나 접근할 수 없으면 메인 페이지는 fallback UI를 보여주고, 목록/상세 페이지는 빈 데이터 또는 `not found`로 보일 수 있다.
-- 주간 리뷰 페이지 `/weekly`는 아직 구현 전이다.
+- 주간 리뷰 페이지 `/weekly`는 공개 수기 활동 로그 기준 주간 KPI/분포 조회를 제공한다.
+- 타임라인 페이지 `/timeline`은 `keyword`, `project`, `activityType`, `from`, `to` 필터 조합을 지원한다.

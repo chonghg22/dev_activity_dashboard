@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { href: "/", label: "Dashboard" },
   { href: "/projects", label: "Projects" },
   { href: "/timeline", label: "Timeline" },
+  { href: "/weekly", label: "Weekly" },
 ];
 
 export default function Navigation() {

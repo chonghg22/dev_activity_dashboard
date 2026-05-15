@@ -8,6 +8,7 @@ import Pagination from "@/components/timeline/Pagination";
 interface Props {
   searchParams: Promise<{
     page?: string;
+    keyword?: string;
     projectSlug?: string;
     activityType?: string;
     from?: string;
@@ -23,6 +24,7 @@ export default async function TimelinePage({ searchParams }: Props) {
     fetchTimeline({
       page,
       size: 20,
+      keyword: params.keyword,
       projectSlug: params.projectSlug,
       activityType: params.activityType,
       from: params.from,
@@ -32,6 +34,7 @@ export default async function TimelinePage({ searchParams }: Props) {
   ]);
 
   const extraParams: Record<string, string> = {};
+  if (params.keyword) extraParams.keyword = params.keyword;
   if (params.projectSlug) extraParams.projectSlug = params.projectSlug;
   if (params.activityType) extraParams.activityType = params.activityType;
   if (params.from) extraParams.from = params.from;
@@ -43,6 +46,7 @@ export default async function TimelinePage({ searchParams }: Props) {
 
       <TimelineFilter
         projects={projects.content}
+        currentKeyword={params.keyword}
         currentProjectSlug={params.projectSlug}
         currentActivityType={params.activityType}
         currentFrom={params.from}
