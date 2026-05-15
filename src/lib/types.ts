@@ -43,10 +43,11 @@ export interface ProjectMetric {
 
 export interface PublicStatsSummary {
   publicProjectCount: number;
-  publicManualLogCount: number;
-  publicExternalActivityCount: number;
-  totalPublicActivityCount: number;
-  highlightedLogCount: number;
+  totalCommitCount: number;
+  weeklyCommitCount: number;
+  totalPullRequestActivityCount: number;
+  weeklyPullRequestActivityCount: number;
+  recent7DayActivityCount: number;
   activityTypeCounts: ActivityTypeMetric[];
 }
 

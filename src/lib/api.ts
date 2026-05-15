@@ -109,9 +109,11 @@ const fetchCachedRecentTimeline = unstable_cache(
 async function loadStatsSummary(): Promise<PublicStatsSummary> {
   const [
     publicProjectCountResult,
-    publicManualLogCountResult,
-    publicExternalActivityCountResult,
-    highlightedLogCountResult,
+    totalCommitCountResult,
+    weeklyCommitCountResult,
+    totalPullRequestActivityCountResult,
+    weeklyPullRequestActivityCountResult,
+    recent7DayActivityCountResult,
     activityTypeCountsResult,
   ] = await Promise.all([
     query<{ count: string }>(`
@@ -122,9 +124,10 @@ async function loadStatsSummary(): Promise<PublicStatsSummary> {
     `),
     query<{ count: string }>(`
       SELECT COUNT(*)::text AS count
-      FROM ${dbSchema}.manual_logs ml
-      JOIN ${dbSchema}.projects p ON p.id = ml.project_id
-      WHERE ml.visibility = 'PUBLIC'
+      FROM ${dbSchema}.external_activities ea
+      JOIN ${dbSchema}.projects p ON p.id = ea.project_id
+      WHERE ea.activity_type = 'COMMIT'
+        AND ea.is_public = true
         AND p.is_public = true
         AND p.status = 'ACTIVE'
     `),
@@ -132,41 +135,114 @@ async function loadStatsSummary(): Promise<PublicStatsSummary> {
       SELECT COUNT(*)::text AS count
       FROM ${dbSchema}.external_activities ea
       JOIN ${dbSchema}.projects p ON p.id = ea.project_id
-      WHERE ea.is_public = true
+      CROSS JOIN (
+        SELECT
+          timezone('Asia/Seoul', now())::date AS today,
+          (timezone('Asia/Seoul', now())::date
+            - ((EXTRACT(ISODOW FROM timezone('Asia/Seoul', now())::date)::int) - 1)
+          )::date AS week_start
+      ) range
+      WHERE ea.activity_type = 'COMMIT'
+        AND ea.is_public = true
+        AND p.is_public = true
+        AND p.status = 'ACTIVE'
+        AND ea.occurred_at >= range.week_start
+        AND ea.occurred_at < (range.week_start + INTERVAL '7 day')
+    `),
+    query<{ count: string }>(`
+      SELECT COUNT(*)::text AS count
+      FROM ${dbSchema}.external_activities ea
+      JOIN ${dbSchema}.projects p ON p.id = ea.project_id
+      WHERE ea.activity_type IN ('PR_OPENED', 'PR_MERGED', 'PR_CLOSED')
+        AND ea.is_public = true
         AND p.is_public = true
         AND p.status = 'ACTIVE'
     `),
     query<{ count: string }>(`
       SELECT COUNT(*)::text AS count
-      FROM ${dbSchema}.manual_logs ml
-      JOIN ${dbSchema}.projects p ON p.id = ml.project_id
-      WHERE ml.visibility = 'PUBLIC'
-        AND ml.is_highlighted = true
+      FROM ${dbSchema}.external_activities ea
+      JOIN ${dbSchema}.projects p ON p.id = ea.project_id
+      CROSS JOIN (
+        SELECT
+          timezone('Asia/Seoul', now())::date AS today,
+          (timezone('Asia/Seoul', now())::date
+            - ((EXTRACT(ISODOW FROM timezone('Asia/Seoul', now())::date)::int) - 1)
+          )::date AS week_start
+      ) range
+      WHERE ea.activity_type IN ('PR_OPENED', 'PR_MERGED', 'PR_CLOSED')
+        AND ea.is_public = true
         AND p.is_public = true
         AND p.status = 'ACTIVE'
+        AND ea.occurred_at >= range.week_start
+        AND ea.occurred_at < (range.week_start + INTERVAL '7 day')
+    `),
+    query<{ count: string }>(`
+      SELECT (
+        COALESCE((
+          SELECT COUNT(*)
+          FROM ${dbSchema}.manual_logs ml
+          JOIN ${dbSchema}.projects p ON p.id = ml.project_id
+          CROSS JOIN (
+            SELECT timezone('Asia/Seoul', now())::date AS today
+          ) range
+          WHERE ml.visibility = 'PUBLIC'
+            AND p.is_public = true
+            AND p.status = 'ACTIVE'
+            AND ml.work_date BETWEEN (range.today - 6) AND range.today
+        ), 0)
+        +
+        COALESCE((
+          SELECT COUNT(*)
+          FROM ${dbSchema}.external_activities ea
+          JOIN ${dbSchema}.projects p ON p.id = ea.project_id
+          CROSS JOIN (
+            SELECT timezone('Asia/Seoul', now())::date AS today
+          ) range
+          WHERE ea.is_public = true
+            AND p.is_public = true
+            AND p.status = 'ACTIVE'
+            AND ea.occurred_at >= (range.today - 6)
+            AND ea.occurred_at < (range.today + INTERVAL '1 day')
+        ), 0)
+      )::text AS count
     `),
     query<{ activity_type: string; count: string }>(`
-      SELECT ml.activity_type, COUNT(*)::text AS count
-      FROM ${dbSchema}.manual_logs ml
-      JOIN ${dbSchema}.projects p ON p.id = ml.project_id
-      WHERE ml.visibility = 'PUBLIC'
-        AND p.is_public = true
-        AND p.status = 'ACTIVE'
-      GROUP BY ml.activity_type
-      ORDER BY COUNT(*) DESC, ml.activity_type ASC
+      SELECT activity_type, COUNT(*)::text AS count
+      FROM (
+        SELECT ml.activity_type AS activity_type
+        FROM ${dbSchema}.manual_logs ml
+        JOIN ${dbSchema}.projects p ON p.id = ml.project_id
+        WHERE ml.visibility = 'PUBLIC'
+          AND p.is_public = true
+          AND p.status = 'ACTIVE'
+
+        UNION ALL
+
+        SELECT ea.activity_type AS activity_type
+        FROM ${dbSchema}.external_activities ea
+        JOIN ${dbSchema}.projects p ON p.id = ea.project_id
+        WHERE ea.is_public = true
+          AND p.is_public = true
+          AND p.status = 'ACTIVE'
+      ) activity_stream
+      GROUP BY activity_type
+      ORDER BY COUNT(*) DESC, activity_type ASC
     `),
   ]);
 
   return {
     publicProjectCount: Number(publicProjectCountResult.rows[0]?.count ?? 0),
-    publicManualLogCount: Number(publicManualLogCountResult.rows[0]?.count ?? 0),
-    publicExternalActivityCount: Number(
-      publicExternalActivityCountResult.rows[0]?.count ?? 0,
+    totalCommitCount: Number(totalCommitCountResult.rows[0]?.count ?? 0),
+    weeklyCommitCount: Number(weeklyCommitCountResult.rows[0]?.count ?? 0),
+    totalPullRequestActivityCount: Number(
+      totalPullRequestActivityCountResult.rows[0]?.count ?? 0,
     ),
-    totalPublicActivityCount:
-      Number(publicManualLogCountResult.rows[0]?.count ?? 0) +
-      Number(publicExternalActivityCountResult.rows[0]?.count ?? 0),
-    highlightedLogCount: Number(highlightedLogCountResult.rows[0]?.count ?? 0),
+    weeklyPullRequestActivityCount: Number(
+      weeklyPullRequestActivityCountResult.rows[0]?.count ?? 0,
+    ),
+    recent7DayActivityCount: Number(
+      recent7DayActivityCountResult.rows[0]?.count ?? 0,
+    ),
     activityTypeCounts: activityTypeCountsResult.rows.map((row) => ({
       activityType: row.activity_type,
       count: Number(row.count),

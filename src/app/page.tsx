@@ -78,16 +78,37 @@ export default async function HomePage() {
           helper="활성 상태이면서 공개로 설정된 프로젝트 수"
         />
         <SummaryCard
-          label="공개 활동 기록"
-          value={stats.totalPublicActivityCount}
+          label="총 커밋 수"
+          value={stats.totalCommitCount}
           icon="&#128221;"
-          helper={`누적 공개 건수: 수기 로그 ${stats.publicManualLogCount} + 외부 활동 ${stats.publicExternalActivityCount}`}
+          helper="모든 공개 프로젝트의 누적 커밋 활동 수"
         />
         <SummaryCard
-          label="하이라이트 로그"
-          value={stats.highlightedLogCount}
-          icon="&#11088;"
-          helper="공개 수기 로그 중 하이라이트로 지정된 기록 수"
+          label="주간 커밋 수"
+          value={stats.weeklyCommitCount}
+          icon="&#128197;"
+          helper="이번 주 월요일부터 집계한 공개 커밋 활동 수"
+        />
+      </section>
+
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <SummaryCard
+          label="총 PR 수"
+          value={stats.totalPullRequestActivityCount}
+          icon="&#128260;"
+          helper="모든 공개 프로젝트의 누적 PR 관련 활동 수"
+        />
+        <SummaryCard
+          label="주간 PR 수"
+          value={stats.weeklyPullRequestActivityCount}
+          icon="&#128209;"
+          helper="이번 주 월요일부터 집계한 공개 PR 관련 활동 수"
+        />
+        <SummaryCard
+          label="최근 7일 활동"
+          value={stats.recent7DayActivityCount}
+          icon="&#9201;"
+          helper="최근 7일간 공개 수기 로그와 외부 활동을 합산한 수"
         />
       </section>
 
@@ -119,8 +140,8 @@ export default async function HomePage() {
         <div className="lg:col-span-1">
           <ActivityChart metrics={stats.activityTypeCounts} />
           <p className="mt-2 px-1 text-xs text-gray-400">
-            분포 차트는 공개 수기 로그 기준입니다. 외부 동기화 활동은 위의
-            공개 활동 기록 카드에만 합산됩니다.
+            분포 차트는 공개 수기 로그와 공개 외부 활동을 함께 기준으로
+            집계합니다.
           </p>
         </div>
         <div className="lg:col-span-2">
