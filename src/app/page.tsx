@@ -49,16 +49,6 @@ export default async function HomePage() {
         />
       </section>
 
-      {/* 활동 분포 + 최근 타임라인 */}
-      <section className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-        <div className="lg:col-span-1">
-          <ActivityChart metrics={stats.activityTypeCounts} />
-        </div>
-        <div className="lg:col-span-2">
-          <RecentTimeline items={timeline.content} />
-        </div>
-      </section>
-
       {/* 프로젝트 카드 */}
       {projects.content.length > 0 && (
         <section>
@@ -72,6 +62,16 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* 활동 분포 + 최근 타임라인 */}
+      <section className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+        <div className="lg:col-span-1">
+          <ActivityChart metrics={stats.activityTypeCounts} />
+        </div>
+        <div className="lg:col-span-2">
+          <RecentTimeline items={timeline.content} />
+        </div>
+      </section>
     </div>
   );
 }
