@@ -1,6 +1,26 @@
 @import "tailwindcss";
 
 :root {
+  --font-sans:
+    "Pretendard Variable", "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo",
+    "Malgun Gothic", "Segoe UI", sans-serif;
+  --font-mono:
+    "JetBrains Mono", "SFMono-Regular", "SF Mono", Consolas, "Liberation Mono",
+    monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-mono);
+}
+
+:root {
   --background: #ffffff;
   --foreground: #171717;
 }

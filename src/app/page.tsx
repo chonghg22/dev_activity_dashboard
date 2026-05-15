@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { fetchStatsSummary, fetchTimeline, fetchPublicProjects } from "@/lib/api";
 import SummaryCard from "@/components/dashboard/SummaryCard";
 import ActivityChart from "@/components/dashboard/ActivityChart";
