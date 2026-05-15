@@ -33,39 +33,45 @@ export default function RecentTimeline({ items }: RecentTimelineProps) {
           View all &rarr;
         </Link>
       </div>
-      <ul className="divide-y divide-gray-100">
-        {items.map((item) => (
-          <li key={`${item.sourceKind}-${item.id}`} className="px-6 py-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-gray-900">
+      <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2">
+        {items.slice(0, 4).map((item) => (
+          <article
+            key={`${item.sourceKind}-${item.id}`}
+            className="flex h-full flex-col justify-between rounded-lg border border-gray-100 bg-gray-50 p-4 transition-colors hover:border-gray-200 hover:bg-white"
+          >
+            <div className="space-y-3">
+              <div className="flex items-start justify-between gap-3">
+                <p className="line-clamp-2 text-sm font-medium text-gray-900">
                   {item.highlighted && (
                     <span className="mr-1 text-yellow-500">&#9733;</span>
                   )}
                   {item.title}
                 </p>
-                <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-gray-500">
-                  <span>{formatDate(item.workDate)}</span>
-                  <span>&middot;</span>
-                  <Link
-                    href={`/projects/${item.projectSlug}`}
-                    className="hover:text-gray-800"
-                  >
-                    {item.projectName}
-                  </Link>
-                  <span>&middot;</span>
-                  <span>{sourceKindLabel(item.sourceKind)}</span>
-                </div>
+                <span
+                  className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium ${activityTypeColor(item.activityType)}`}
+                >
+                  {activityTypeLabel(item.activityType)}
+                </span>
               </div>
-              <span
-                className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${activityTypeColor(item.activityType)}`}
-              >
-                {activityTypeLabel(item.activityType)}
-              </span>
+              <p className="line-clamp-2 text-sm text-gray-500">
+                {item.content}
+              </p>
             </div>
-          </li>
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-gray-500">
+              <span>{formatDate(item.workDate)}</span>
+              <span>&middot;</span>
+              <Link
+                href={`/projects/${item.projectSlug}`}
+                className="hover:text-gray-800"
+              >
+                {item.projectName}
+              </Link>
+              <span>&middot;</span>
+              <span>{sourceKindLabel(item.sourceKind)}</span>
+            </div>
+          </article>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
