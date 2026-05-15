@@ -18,8 +18,9 @@ function resolveSchema() {
 
 function buildPoolConfig(): PoolConfig | null {
   if (process.env.DATABASE_URL) {
+    const connectionString = normalizeConnectionString(process.env.DATABASE_URL);
     return {
-      connectionString: process.env.DATABASE_URL,
+      connectionString,
       ssl: { rejectUnauthorized: false },
       max: 5,
       idleTimeoutMillis: 30_000,
@@ -45,6 +46,18 @@ function buildPoolConfig(): PoolConfig | null {
     max: 5,
     idleTimeoutMillis: 30_000,
   };
+}
+
+function normalizeConnectionString(connectionString: string) {
+  const url = new URL(connectionString);
+
+  // Supabase pooler examples often include sslmode=require. For pg in Node,
+  // we already pass an explicit ssl option, so stripping it avoids stricter
+  // certificate validation semantics from the connection string parser.
+  url.searchParams.delete("sslmode");
+  url.searchParams.delete("uselibpqcompat");
+
+  return url.toString();
 }
 
 function getPool() {
