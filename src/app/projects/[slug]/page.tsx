@@ -21,28 +21,30 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   return (
     <div className="space-y-8">
-      <div>
-        <div className="mb-2 flex items-center gap-3">
-          <h1 className="text-2xl font-bold text-gray-900">{project.name}</h1>
-          <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
+      <section className="rounded-2xl border border-stone-200 bg-white p-6">
+        <div className="mb-2 flex flex-wrap items-center gap-3">
+          <h1 className="text-2xl font-semibold tracking-tight text-stone-950">
+            {project.name}
+          </h1>
+          <span className="rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-xs font-medium text-stone-600">
             {project.category}
           </span>
         </div>
         {project.description && (
-          <p className="text-gray-600">{project.description}</p>
+          <p className="text-sm leading-6 text-stone-600">{project.description}</p>
         )}
         {(project.startedOn || project.endedOn) && (
-          <p className="mt-2 text-sm text-gray-400">
+          <p className="mt-3 text-sm text-stone-500">
             {project.startedOn && formatDate(project.startedOn)}
             {project.startedOn && project.endedOn && " ~ "}
             {project.endedOn && formatDate(project.endedOn)}
             {project.startedOn && !project.endedOn && " ~ 진행 중"}
           </p>
         )}
-      </div>
+      </section>
 
       <section>
-        <h2 className="mb-4 text-lg font-semibold text-gray-800">
+        <h2 className="mb-4 text-lg font-semibold text-stone-900">
           활동 타임라인
         </h2>
         <RecentTimeline items={timeline.content} />

@@ -14,7 +14,7 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex gap-1">
+    <nav className="flex flex-wrap justify-end gap-2">
       {NAV_ITEMS.map(({ href, label }) => {
         const active =
           href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -22,10 +22,10 @@ export default function Navigation() {
           <Link
             key={href}
             href={href}
-            className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+            className={`rounded-full px-3.5 py-2 text-sm font-medium ${
               active
-                ? "bg-gray-900 text-white"
-                : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                ? "border border-stone-900 bg-stone-900 text-white"
+                : "border border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900"
             }`}
           >
             {label}

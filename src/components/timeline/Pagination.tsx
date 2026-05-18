@@ -26,18 +26,18 @@ export default function Pagination({
       {currentPage > 0 && (
         <Link
           href={buildHref(currentPage - 1)}
-          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50"
+          className="rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-600 hover:bg-stone-50"
         >
           이전
         </Link>
       )}
-      <span className="text-sm text-gray-500">
+      <span className="text-sm text-stone-500">
         {currentPage + 1} / {totalPages}
       </span>
       {currentPage < totalPages - 1 && (
         <Link
           href={buildHref(currentPage + 1)}
-          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50"
+          className="rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-600 hover:bg-stone-50"
         >
           다음
         </Link>

@@ -13,24 +13,24 @@ interface TimelineItemProps {
 
 export default function TimelineItem({ item }: TimelineItemProps) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-stone-200 bg-white p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <h3 className="text-sm font-semibold text-gray-900">
+          <h3 className="text-sm font-semibold text-stone-950">
             {item.highlighted && (
-              <span className="mr-1 text-yellow-500">&#9733;</span>
+              <span className="mr-1 text-stone-500">&#9733;</span>
             )}
             {item.title}
           </h3>
-          <p className="mt-1 line-clamp-2 text-sm text-gray-500">
+          <p className="mt-1 line-clamp-2 text-sm leading-6 text-stone-600">
             {item.content}
           </p>
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-gray-400">
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-stone-500">
             <span>{formatDate(item.workDate)}</span>
             <span>&middot;</span>
             <Link
               href={`/projects/${item.projectSlug}`}
-              className="text-gray-500 hover:text-gray-800"
+              className="text-stone-600 hover:text-stone-900"
             >
               {item.projectName}
             </Link>
@@ -42,7 +42,7 @@ export default function TimelineItem({ item }: TimelineItemProps) {
               {item.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-500"
+                  className="rounded-md bg-stone-100 px-2 py-0.5 text-xs text-stone-500"
                 >
                   {tag}
                 </span>

@@ -10,17 +10,17 @@ export default function ActivityChart({ metrics }: ActivityChartProps) {
   if (total === 0) return null;
 
   return (
-    <div className="rounded-2xl border border-white/70 bg-white/90 p-6 shadow-[0_18px_40px_rgba(15,23,42,0.07)]">
+    <div className="rounded-2xl border border-stone-200 bg-white p-6">
       <div className="mb-5 flex items-end justify-between gap-3">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-stone-500">
             분포
           </p>
-          <h3 className="mt-2 text-lg font-semibold text-gray-950">
+          <h3 className="mt-2 text-lg font-semibold text-stone-950">
             활동 유형 분포
           </h3>
         </div>
-        <span className="rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-[11px] font-semibold text-gray-500">
+        <span className="rounded-full border border-stone-200 bg-stone-50 px-2.5 py-1 text-[11px] font-semibold text-stone-500">
           총 {total}건
         </span>
       </div>
@@ -35,13 +35,13 @@ export default function ActivityChart({ metrics }: ActivityChartProps) {
                 >
                   {activityTypeLabel(m.activityType)}
                 </span>
-                <span className="text-gray-500">
+                <span className="text-stone-500">
                   {m.count} ({pct}%)
                 </span>
               </div>
-              <div className="h-2.5 overflow-hidden rounded-full bg-gray-100">
+              <div className="h-2.5 overflow-hidden rounded-full bg-stone-100">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-amber-500 to-slate-900 transition-all"
+                  className="h-full rounded-full bg-stone-900 transition-all"
                   style={{ width: `${pct}%` }}
                 />
               </div>

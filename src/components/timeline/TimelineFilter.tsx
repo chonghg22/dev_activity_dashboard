@@ -65,17 +65,17 @@ export default function TimelineFilter({
   }, [router]);
 
   const selectClass =
-    "rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-gray-500 focus:outline-none";
+    "rounded-lg border border-stone-300 bg-white px-3 py-2.5 text-sm text-stone-700 focus:border-stone-500 focus:outline-none";
   const inputClass =
-    "rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-gray-500 focus:outline-none";
+    "rounded-lg border border-stone-300 bg-white px-3 py-2.5 text-sm text-stone-700 focus:border-stone-500 focus:outline-none";
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-wrap items-end gap-3 rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+      className="flex flex-wrap items-end gap-3 rounded-2xl border border-stone-200 bg-white p-4"
     >
       <div className="min-w-[220px] flex-1 flex-col gap-1">
-        <label className="text-xs text-gray-500">검색어</label>
+        <label className="text-xs font-medium text-stone-500">검색어</label>
         <input
           type="text"
           name="keyword"
@@ -86,7 +86,7 @@ export default function TimelineFilter({
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-gray-500">프로젝트</label>
+        <label className="text-xs font-medium text-stone-500">프로젝트</label>
         <select
           name="projectSlug"
           defaultValue={currentProjectSlug ?? ""}
@@ -102,7 +102,7 @@ export default function TimelineFilter({
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-gray-500">활동 유형</label>
+        <label className="text-xs font-medium text-stone-500">활동 유형</label>
         <select
           name="activityType"
           defaultValue={currentActivityType ?? ""}
@@ -118,7 +118,7 @@ export default function TimelineFilter({
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-gray-500">시작일</label>
+        <label className="text-xs font-medium text-stone-500">시작일</label>
         <input
           type="date"
           name="from"
@@ -128,7 +128,7 @@ export default function TimelineFilter({
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-gray-500">종료일</label>
+        <label className="text-xs font-medium text-stone-500">종료일</label>
         <input
           type="date"
           name="to"
@@ -139,14 +139,14 @@ export default function TimelineFilter({
 
       <button
         type="submit"
-        className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
+        className="rounded-lg bg-stone-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-stone-800"
       >
         적용
       </button>
       <button
         type="button"
         onClick={handleReset}
-        className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
+        className="rounded-lg border border-stone-300 px-4 py-2.5 text-sm font-medium text-stone-600 hover:bg-stone-50"
       >
         초기화
       </button>
