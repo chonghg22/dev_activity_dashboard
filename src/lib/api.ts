@@ -113,7 +113,7 @@ async function loadStatsSummary(): Promise<PublicStatsSummary> {
     weeklyCommitCountResult,
     totalPullRequestActivityCountResult,
     weeklyPullRequestActivityCountResult,
-    recent7DayActivityCountResult,
+    lastSyncedAtResult,
     activityTypeCountsResult,
   ] = await Promise.all([
     query<{ count: string }>(`
@@ -176,35 +176,10 @@ async function loadStatsSummary(): Promise<PublicStatsSummary> {
         AND ea.occurred_at >= range.week_start
         AND ea.occurred_at < (range.week_start + INTERVAL '7 day')
     `),
-    query<{ count: string }>(`
-      SELECT (
-        COALESCE((
-          SELECT COUNT(*)
-          FROM ${dbSchema}.manual_logs ml
-          JOIN ${dbSchema}.projects p ON p.id = ml.project_id
-          CROSS JOIN (
-            SELECT timezone('Asia/Seoul', now())::date AS today
-          ) range
-          WHERE ml.visibility = 'PUBLIC'
-            AND p.is_public = true
-            AND p.status = 'ACTIVE'
-            AND ml.work_date BETWEEN (range.today - 6) AND range.today
-        ), 0)
-        +
-        COALESCE((
-          SELECT COUNT(*)
-          FROM ${dbSchema}.external_activities ea
-          JOIN ${dbSchema}.projects p ON p.id = ea.project_id
-          CROSS JOIN (
-            SELECT timezone('Asia/Seoul', now())::date AS today
-          ) range
-          WHERE ea.is_public = true
-            AND p.is_public = true
-            AND p.status = 'ACTIVE'
-            AND ea.occurred_at >= (range.today - 6)
-            AND ea.occurred_at < (range.today + INTERVAL '1 day')
-        ), 0)
-      )::text AS count
+    query<{ last_synced_at: string | null }>(`
+      SELECT MAX(sj.last_synced_at)::text AS last_synced_at
+      FROM ${dbSchema}.sync_jobs sj
+      WHERE sj.source_type = 'GITHUB'
     `),
     query<{ activity_type: string; count: string }>(`
       SELECT activity_type, COUNT(*)::text AS count
@@ -240,9 +215,7 @@ async function loadStatsSummary(): Promise<PublicStatsSummary> {
     weeklyPullRequestActivityCount: Number(
       weeklyPullRequestActivityCountResult.rows[0]?.count ?? 0,
     ),
-    recent7DayActivityCount: Number(
-      recent7DayActivityCountResult.rows[0]?.count ?? 0,
-    ),
+    lastSyncedAt: lastSyncedAtResult.rows[0]?.last_synced_at ?? null,
     activityTypeCounts: activityTypeCountsResult.rows.map((row) => ({
       activityType: row.activity_type,
       count: Number(row.count),

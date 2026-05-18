@@ -3,6 +3,7 @@ import {
   fetchPublicProjects,
   fetchStatsSummary,
 } from "@/lib/api";
+import { formatDateTimeCompact } from "@/lib/format";
 import SummaryCard from "@/components/dashboard/SummaryCard";
 import ActivityChart from "@/components/dashboard/ActivityChart";
 import RecentTimeline from "@/components/dashboard/RecentTimeline";
@@ -154,10 +155,10 @@ export default async function HomePage() {
             helper="이번 주 월요일부터 집계한 PR 생성, 머지, 종료 이벤트 수"
           />
           <SummaryCard
-            label="최근 7일 활동"
-            value={stats.recent7DayActivityCount}
+            label="최근 동기화 시각"
+            value={formatDateTimeCompact(stats.lastSyncedAt)}
             icon="&#9201;"
-            helper="최근 7일간 공개 수기 로그와 외부 활동을 합산한 전체 활동 수"
+            helper="가장 최근에 GitHub 동기화가 완료된 시각"
           />
         </div>
       </section>

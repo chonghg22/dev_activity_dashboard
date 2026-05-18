@@ -1,6 +1,6 @@
 interface SummaryCardProps {
   label: string;
-  value: number;
+  value: number | string;
   icon: string;
   helper?: string;
 }
@@ -11,6 +11,8 @@ export default function SummaryCard({
   icon,
   helper,
 }: SummaryCardProps) {
+  const isNumeric = typeof value === "number";
+
   return (
     <div className="relative overflow-hidden rounded-2xl border border-white/70 bg-white/90 p-6 shadow-[0_18px_40px_rgba(15,23,42,0.07)] backdrop-blur-sm">
       <div className="absolute right-0 top-0 h-20 w-20 rounded-full bg-amber-100/60 blur-2xl" />
@@ -20,7 +22,11 @@ export default function SummaryCard({
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400">
               {label}
             </p>
-            <p className="mt-3 text-3xl font-semibold tracking-tight text-gray-950">
+            <p
+              className={`mt-3 font-semibold tracking-tight text-gray-950 ${
+                isNumeric ? "text-3xl" : "text-2xl"
+              }`}
+            >
               {value}
             </p>
           </div>

@@ -47,7 +47,7 @@ export interface PublicStatsSummary {
   weeklyCommitCount: number;
   totalPullRequestActivityCount: number;
   weeklyPullRequestActivityCount: number;
-  recent7DayActivityCount: number;
+  lastSyncedAt: string | null;
   activityTypeCounts: ActivityTypeMetric[];
 }
 
