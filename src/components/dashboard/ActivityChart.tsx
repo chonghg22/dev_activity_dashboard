@@ -19,9 +19,6 @@ export default function ActivityChart({ metrics }: ActivityChartProps) {
           <h3 className="mt-2 text-lg font-semibold text-gray-950">
             활동 유형 분포
           </h3>
-          <p className="mt-2 text-xs leading-5 text-gray-500">
-            공개 수기 로그와 GitHub 동기화 활동을 함께 기준으로 봅니다.
-          </p>
         </div>
         <div className="flex flex-col items-end gap-2">
           <span className="rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-[11px] font-semibold text-gray-500">
