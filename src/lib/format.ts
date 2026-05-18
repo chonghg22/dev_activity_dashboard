@@ -57,7 +57,7 @@ export function formatDateTime(value: string | Date): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-/** ISO datetime → 'MM-DD HH:mm' */
+/** ISO datetime → 'YYYY-MM-DD HH:mm' */
 export function formatDateTimeCompact(
   value: string | Date | null | undefined,
 ): string {
@@ -67,7 +67,7 @@ export function formatDateTimeCompact(
 
   const d = value instanceof Date ? value : new Date(value);
   const pad = (n: number) => String(n).padStart(2, "0");
-  return `${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 /** sourceKind 라벨 */
