@@ -190,9 +190,6 @@ export default async function HomePage() {
       <section className="grid grid-cols-1 gap-5 lg:grid-cols-3">
         <div className="lg:col-span-1">
           <ActivityChart metrics={stats.activityTypeCounts} />
-          <p className="mt-2 px-1 text-xs text-gray-400">
-            분포 차트는 공개 수기 로그와 공개 외부 활동을 함께 집계한 결과입니다.
-          </p>
         </div>
         <div className="lg:col-span-2">
           <RecentTimeline items={timeline.content} />
