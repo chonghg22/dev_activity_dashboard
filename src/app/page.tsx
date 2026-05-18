@@ -5,7 +5,6 @@ import {
 } from "@/lib/api";
 import { formatDateTimeCompact } from "@/lib/format";
 import SummaryCard from "@/components/dashboard/SummaryCard";
-import ActivityChart from "@/components/dashboard/ActivityChart";
 import RecentTimeline from "@/components/dashboard/RecentTimeline";
 import ProjectCard from "@/components/project/ProjectCard";
 
@@ -187,13 +186,8 @@ export default async function HomePage() {
         </section>
       )}
 
-      <section className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-        <div className="lg:col-span-1">
-          <ActivityChart metrics={stats.activityTypeCounts} />
-        </div>
-        <div className="lg:col-span-2">
-          <RecentTimeline items={timeline.content} />
-        </div>
+      <section>
+        <RecentTimeline items={timeline.content} />
       </section>
     </div>
   );
