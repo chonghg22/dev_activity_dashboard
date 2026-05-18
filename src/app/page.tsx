@@ -70,46 +70,96 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <SummaryCard
-          label="공개 프로젝트"
-          value={stats.publicProjectCount}
-          icon="&#128194;"
-          helper="활성 상태이면서 공개로 설정된 프로젝트 수"
-        />
-        <SummaryCard
-          label="총 커밋 수"
-          value={stats.totalCommitCount}
-          icon="&#128221;"
-          helper="모든 공개 프로젝트의 누적 커밋 활동 수"
-        />
-        <SummaryCard
-          label="주간 커밋 수"
-          value={stats.weeklyCommitCount}
-          icon="&#128197;"
-          helper="이번 주 월요일부터 집계한 공개 커밋 활동 수"
-        />
+      <section className="rounded-2xl border border-amber-100 bg-amber-50/70 px-5 py-4 shadow-sm">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-700">
+              집계 기준
+            </p>
+            <p className="mt-1 text-sm leading-6 text-amber-950/85">
+              모든 KPI는 공개 프로젝트만 대상으로 집계합니다. 커밋과 PR은
+              GitHub 동기화 활동 기준이며, PR 수는 현재 고유 PR 개수가 아닌
+              PR 이벤트 수입니다.
+            </p>
+          </div>
+          <span className="inline-flex rounded-full border border-amber-200 bg-white/80 px-3 py-1 text-xs font-medium text-amber-800">
+            공개 프로젝트 + GitHub 동기화 기준
+          </span>
+        </div>
       </section>
 
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <SummaryCard
-          label="총 PR 수"
-          value={stats.totalPullRequestActivityCount}
-          icon="&#128260;"
-          helper="모든 공개 프로젝트의 누적 PR 관련 활동 수"
-        />
-        <SummaryCard
-          label="주간 PR 수"
-          value={stats.weeklyPullRequestActivityCount}
-          icon="&#128209;"
-          helper="이번 주 월요일부터 집계한 공개 PR 관련 활동 수"
-        />
-        <SummaryCard
-          label="최근 7일 활동"
-          value={stats.recent7DayActivityCount}
-          icon="&#9201;"
-          helper="최근 7일간 공개 수기 로그와 외부 활동을 합산한 수"
-        />
+      <section className="space-y-4">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400">
+              핵심 지표
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-gray-950">
+              누적 지표
+            </h2>
+          </div>
+          <p className="hidden max-w-md text-right text-sm leading-6 text-gray-500 md:block">
+            프로젝트 수와 누적 GitHub 활동량 중심으로 포트폴리오의 전체 규모를
+            보여줍니다.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <SummaryCard
+            label="공개 프로젝트"
+            value={stats.publicProjectCount}
+            icon="&#128194;"
+            helper="활성 상태이면서 공개로 설정된 프로젝트 수"
+          />
+          <SummaryCard
+            label="총 커밋 수"
+            value={stats.totalCommitCount}
+            icon="&#128221;"
+            helper="모든 공개 프로젝트에 누적된 GitHub 커밋 활동 수"
+          />
+          <SummaryCard
+            label="총 PR 이벤트 수"
+            value={stats.totalPullRequestActivityCount}
+            icon="&#128260;"
+            helper="PR 생성, 머지, 종료 이벤트를 모두 합산한 누적 수"
+          />
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400">
+              최근 흐름
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-gray-950">
+              최근 활동 추세
+            </h2>
+          </div>
+          <p className="hidden max-w-md text-right text-sm leading-6 text-gray-500 md:block">
+            이번 주와 최근 7일 기준으로 현재 얼마나 활동이 이어지고 있는지
+            보여줍니다.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <SummaryCard
+            label="주간 커밋 수"
+            value={stats.weeklyCommitCount}
+            icon="&#128197;"
+            helper="이번 주 월요일부터 집계한 공개 커밋 활동 수"
+          />
+          <SummaryCard
+            label="주간 PR 이벤트 수"
+            value={stats.weeklyPullRequestActivityCount}
+            icon="&#128209;"
+            helper="이번 주 월요일부터 집계한 PR 생성, 머지, 종료 이벤트 수"
+          />
+          <SummaryCard
+            label="최근 7일 활동"
+            value={stats.recent7DayActivityCount}
+            icon="&#9201;"
+            helper="최근 7일간 공개 수기 로그와 외부 활동을 합산한 전체 활동 수"
+          />
+        </div>
       </section>
 
       {projects.content.length > 0 && (
@@ -140,8 +190,7 @@ export default async function HomePage() {
         <div className="lg:col-span-1">
           <ActivityChart metrics={stats.activityTypeCounts} />
           <p className="mt-2 px-1 text-xs text-gray-400">
-            분포 차트는 공개 수기 로그와 공개 외부 활동을 함께 기준으로
-            집계합니다.
+            분포 차트는 공개 수기 로그와 공개 외부 활동을 함께 집계한 결과입니다.
           </p>
         </div>
         <div className="lg:col-span-2">
