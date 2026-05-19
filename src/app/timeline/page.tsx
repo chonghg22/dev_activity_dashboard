@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 import { fetchTimeline, fetchPublicProjects } from "@/lib/api";
 import TimelineItem from "@/components/timeline/TimelineItem";

@@ -62,7 +62,15 @@ export async function fetchProjectDetail(slug: string) {
 
 export async function fetchTimeline(params: TimelineParams = {}) {
   try {
-    return await loadTimeline(params);
+    return await fetchCachedTimeline(
+      params.page ?? 0,
+      params.size ?? 20,
+      params.keyword ?? "",
+      params.projectSlug ?? "",
+      params.activityType ?? "",
+      params.from ?? "",
+      params.to ?? "",
+    );
   } catch {
     return EMPTY_PAGE as PageResponse<PublicTimelineItem>;
   }
@@ -79,31 +87,54 @@ export async function fetchRecentTimeline(size = 4) {
 const fetchCachedStatsSummary = unstable_cache(
   loadStatsSummary,
   ["public-stats-summary"],
-  { revalidate: 300 },
+  { revalidate: 300, tags: ["public-dashboard", "public-stats-summary"] },
 );
 
 const fetchCachedWeeklyStats = unstable_cache(
   async (weekStartDate: string) => loadWeeklyStats(weekStartDate || undefined),
   ["public-weekly-stats"],
-  { revalidate: 300 },
+  { revalidate: 300, tags: ["public-dashboard", "public-weekly-stats"] },
 );
 
 const fetchCachedPublicProjects = unstable_cache(
   loadPublicProjects,
   ["public-projects"],
-  { revalidate: 300 },
+  { revalidate: 300, tags: ["public-dashboard", "public-projects"] },
 );
 
 const fetchCachedProjectDetail = unstable_cache(
   loadProjectDetail,
   ["public-project-detail"],
-  { revalidate: 300 },
+  { revalidate: 300, tags: ["public-dashboard", "public-project-detail"] },
 );
 
 const fetchCachedRecentTimeline = unstable_cache(
   async (size: number) => loadTimeline({ page: 0, size }),
   ["public-recent-timeline"],
-  { revalidate: 60 },
+  { revalidate: 300, tags: ["public-dashboard", "public-timeline"] },
+);
+
+const fetchCachedTimeline = unstable_cache(
+  async (
+    page: number,
+    size: number,
+    keyword: string,
+    projectSlug: string,
+    activityType: string,
+    from: string,
+    to: string,
+  ) =>
+    loadTimeline({
+      page,
+      size,
+      keyword: keyword || undefined,
+      projectSlug: projectSlug || undefined,
+      activityType: activityType || undefined,
+      from: from || undefined,
+      to: to || undefined,
+    }),
+  ["public-timeline"],
+  { revalidate: 300, tags: ["public-dashboard", "public-timeline"] },
 );
 
 async function loadStatsSummary(): Promise<PublicStatsSummary> {
