@@ -14,7 +14,10 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-wrap justify-end gap-2">
+    <nav
+      aria-label="주요 메뉴"
+      className="-mx-4 flex w-[calc(100%+2rem)] gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:w-auto sm:justify-end sm:overflow-visible sm:px-0 sm:pb-0"
+    >
       {NAV_ITEMS.map(({ href, label }) => {
         const active =
           href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -22,7 +25,7 @@ export default function Navigation() {
           <Link
             key={href}
             href={href}
-            className={`rounded-full px-3.5 py-2 text-sm font-medium ${
+            className={`shrink-0 rounded-full px-3.5 py-2 text-sm font-medium ${
               active
                 ? "border border-stone-900 bg-stone-900 text-white"
                 : "border border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:text-stone-900"
